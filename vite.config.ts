@@ -21,19 +21,18 @@ export default defineConfig(({ mode }) => ({
         manualChunks: (id) => {
           // Vendor chunks optimisés - React doit être chargé en premier
           if (id.includes('node_modules')) {
-            // React et React-DOM en premier (ordre important)
-            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react/jsx-runtime')) {
+            // React et tout ce qui en dépend directement doit être ensemble
+            if (id.includes('react') || 
+                id.includes('react-dom') || 
+                id.includes('react/jsx-runtime') ||
+                id.includes('react-router') ||
+                id.includes('react-hook-form') ||
+                id.includes('scheduler')) {
               return 'vendor-react';
             }
-            if (id.includes('react-router')) {
-              return 'vendor-react';
-            }
-            // Packages qui dépendent de React
+            // Packages UI qui dépendent de React
             if (id.includes('@radix-ui')) {
               return 'vendor-ui';
-            }
-            if (id.includes('react-hook-form')) {
-              return 'vendor-react';
             }
             if (id.includes('embla')) {
               return 'vendor-carousel';
@@ -46,6 +45,14 @@ export default defineConfig(({ mode }) => ({
             }
             if (id.includes('sonner')) {
               return 'vendor-toast';
+            }
+            // Packages qui pourraient utiliser React
+            if (id.includes('class-variance-authority') || 
+                id.includes('clsx') || 
+                id.includes('tailwind-merge') ||
+                id.includes('date-fns') ||
+                id.includes('zod')) {
+              return 'vendor-react';
             }
             // Autres dépendances
             return 'vendor-other';
