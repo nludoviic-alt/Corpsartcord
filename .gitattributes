@@ -1,14 +1,4 @@
-# Images lourdes (> 5MB) - utiliser Git LFS
-*.jpg filter=lfs diff=lfs merge=lfs -text
-*.jpeg filter=lfs diff=lfs merge=lfs -text
-*.png filter=lfs diff=lfs merge=lfs -text
-*.webp filter=lfs diff=lfs merge=lfs -text
-
-# Fichiers spécifiques très lourds
-src/assets/28.jpg filter=lfs diff=lfs merge=lfs -text
-src/assets/30.jpg filter=lfs diff=lfs merge=lfs -text
-src/assets/2.jpg filter=lfs diff=lfs merge=lfs -text
-src/assets/29.jpg filter=lfs diff=lfs merge=lfs -text
-public/pics 2/MUS04315.JPG filter=lfs diff=lfs merge=lfs -text
-public/pics 2/process-creating-stand-up-comedy.jpg filter=lfs diff=lfs merge=lfs -text
+# Note: Les images lourdes sont nécessaires pour le build
+# Netlify peut gérer des repos volumineux sans problème
+# Le build créera les versions optimisées dans dist/
 
