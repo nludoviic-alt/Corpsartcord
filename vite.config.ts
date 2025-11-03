@@ -18,6 +18,14 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       output: {
+        // Définir l'ordre de chargement des chunks
+        chunkFileNames: (chunkInfo) => {
+          // Garantir que vendor-react est toujours chargé en premier
+          if (chunkInfo.name === 'vendor-react') {
+            return 'assets/vendor-react-[hash].js';
+          }
+          return 'assets/[name]-[hash].js';
+        },
         manualChunks: (id) => {
           // Vendor chunks optimisés - React doit être chargé en premier
           if (id.includes('node_modules')) {
@@ -30,6 +38,7 @@ export default defineConfig(({ mode }) => ({
                 id.includes('scheduler')) {
               return 'vendor-react';
             }
+            // Tous les packages qui utilisent React doivent être avec React
             // Packages UI qui dépendent de React
             if (id.includes('@radix-ui')) {
               return 'vendor-ui';
@@ -46,15 +55,33 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('sonner')) {
               return 'vendor-toast';
             }
-            // Packages qui pourraient utiliser React
+            // Packages React/UI - tous dans vendor-react pour garantir l'ordre
             if (id.includes('class-variance-authority') || 
                 id.includes('clsx') || 
                 id.includes('tailwind-merge') ||
-                id.includes('date-fns') ||
-                id.includes('zod')) {
+                id.includes('next-themes') ||
+                id.includes('cmdk') ||
+                id.includes('vaul') ||
+                id.includes('recharts') ||
+                id.includes('input-otp') ||
+                id.includes('embla-carousel-autoplay') ||
+                id.includes('react-resizable-panels') ||
+                id.includes('@hookform')) {
               return 'vendor-react';
             }
-            // Autres dépendances
+            // Packages utilitaires sans React (date-fns, zod sont pure JS, peuvent rester séparés)
+            if (id.includes('date-fns') || id.includes('zod')) {
+              return 'vendor-other';
+            }
+            // Si le chemin contient des mots-clés suggérant React, mettre dans vendor-react
+            // Liste conservative de packages connus qui utilisent React
+            if (id.includes('react') || 
+                id.includes('context') || 
+                id.includes('hook') ||
+                id.includes('component')) {
+              return 'vendor-react';
+            }
+            // Autres dépendances (sans React) - packages pure JS uniquement
             return 'vendor-other';
           }
           // Code splitting par route
