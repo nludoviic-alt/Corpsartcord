@@ -29,13 +29,17 @@ export default defineConfig(({ mode }) => ({
         manualChunks: (id) => {
           // Vendor chunks optimisés - React doit être chargé en premier
           if (id.includes('node_modules')) {
-            // React et tout ce qui en dépend directement doit être ensemble
-            if (id.includes('react') || 
-                id.includes('react-dom') || 
+            // PRIORITÉ 1: React core - doit être en premier
+            if (id.includes('react/') || 
+                id.includes('react-dom/') || 
                 id.includes('react/jsx-runtime') ||
-                id.includes('react-router') ||
-                id.includes('react-hook-form') ||
                 id.includes('scheduler')) {
+              return 'vendor-react';
+            }
+            // PRIORITÉ 2: Packages React connus
+            if (id.includes('react-router') ||
+                id.includes('react-hook-form') ||
+                id.includes('react')) {
               return 'vendor-react';
             }
             // Tous les packages qui utilisent React doivent être avec React
@@ -69,19 +73,25 @@ export default defineConfig(({ mode }) => ({
                 id.includes('@hookform')) {
               return 'vendor-react';
             }
-            // Packages utilitaires sans React (date-fns, zod sont pure JS, peuvent rester séparés)
-            if (id.includes('date-fns') || id.includes('zod')) {
+            // Packages utilitaires pure JS (peuvent être séparés)
+            // Seulement les packages qui sont garantis de ne PAS utiliser React
+            if (id.includes('date-fns') && !id.includes('react')) {
               return 'vendor-other';
             }
-            // Si le chemin contient des mots-clés suggérant React, mettre dans vendor-react
-            // Liste conservative de packages connus qui utilisent React
+            if (id.includes('zod') && !id.includes('react')) {
+              return 'vendor-other';
+            }
+            // Si le chemin contient des indices de React, mettre dans vendor-react
+            // Pour éviter les erreurs, on met tout ce qui pourrait utiliser React dans vendor-react
             if (id.includes('react') || 
                 id.includes('context') || 
                 id.includes('hook') ||
-                id.includes('component')) {
+                id.includes('component') ||
+                id.includes('provider') ||
+                id.includes('theme')) {
               return 'vendor-react';
             }
-            // Autres dépendances (sans React) - packages pure JS uniquement
+            // Autres dépendances (packages pure JS uniquement)
             return 'vendor-other';
           }
           // Code splitting par route
