@@ -73,26 +73,18 @@ export default defineConfig(({ mode }) => ({
                 id.includes('@hookform')) {
               return 'vendor-react';
             }
-            // Packages utilitaires pure JS (peuvent être séparés)
-            // Seulement les packages qui sont garantis de ne PAS utiliser React
+            // Packages utilitaires pure JS UNIQUEMENT (sans aucune dépendance React)
+            // Seulement date-fns et zod qui sont garantis de ne PAS utiliser React
             if (id.includes('date-fns') && !id.includes('react')) {
               return 'vendor-other';
             }
             if (id.includes('zod') && !id.includes('react')) {
               return 'vendor-other';
             }
-            // Si le chemin contient des indices de React, mettre dans vendor-react
-            // Pour éviter les erreurs, on met tout ce qui pourrait utiliser React dans vendor-react
-            if (id.includes('react') || 
-                id.includes('context') || 
-                id.includes('hook') ||
-                id.includes('component') ||
-                id.includes('provider') ||
-                id.includes('theme')) {
-              return 'vendor-react';
-            }
-            // Autres dépendances (packages pure JS uniquement)
-            return 'vendor-other';
+            // TOUT LE RESTE va dans vendor-react pour éviter les problèmes d'ordre de chargement
+            // Même si ce n'est pas React, si c'est dans node_modules, on le met avec React
+            // pour garantir que React est toujours disponible quand nécessaire
+            return 'vendor-react';
           }
           // Code splitting par route
           if (id.includes('/pages/')) {
