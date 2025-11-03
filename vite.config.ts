@@ -19,13 +19,21 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Vendor chunks optimisés
+          // Vendor chunks optimisés - React doit être chargé en premier
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+            // React et React-DOM en premier (ordre important)
+            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react/jsx-runtime')) {
               return 'vendor-react';
             }
+            if (id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            // Packages qui dépendent de React
             if (id.includes('@radix-ui')) {
               return 'vendor-ui';
+            }
+            if (id.includes('react-hook-form')) {
+              return 'vendor-react';
             }
             if (id.includes('embla')) {
               return 'vendor-carousel';
@@ -39,6 +47,7 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('sonner')) {
               return 'vendor-toast';
             }
+            // Autres dépendances
             return 'vendor-other';
           }
           // Code splitting par route
