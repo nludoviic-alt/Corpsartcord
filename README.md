@@ -1,73 +1,57 @@
-# Welcome to your Lovable project
+# Cie Corpsartcord - Site Web
 
-## Project info
+Site web de la Compagnie Corpsartcord - Art, Culture & Inclusion
 
-**URL**: https://lovable.dev/projects/81b01250-b925-4496-a6cf-b6bf2615031a
+## Technologies utilisées
 
-## How can I edit this code?
+- **Vite** - Build tool et serveur de développement
+- **React** - Bibliothèque JavaScript
+- **TypeScript** - Typage statique
+- **shadcn-ui** - Composants UI
+- **Tailwind CSS** - Framework CSS
+- **React Router** - Routage
 
-There are several ways of editing your application.
+## Installation
 
-**Use Lovable**
+```bash
+# Installer les dépendances
+npm install
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/81b01250-b925-4496-a6cf-b6bf2615031a) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Démarrer le serveur de développement
 npm run dev
+
+# Builder pour la production
+npm run build
+
+# Prévisualiser le build de production
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+## Déploiement
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Le site est configuré pour être déployé sur **Netlify**.
 
-**Use GitHub Codespaces**
+Configuration automatique via `netlify.toml` :
+- Build command: `npm ci && npm run build`
+- Publish directory: `dist`
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Structure du projet
 
-## What technologies are used for this project?
+```
+├── src/
+│   ├── components/    # Composants réutilisables
+│   ├── pages/         # Pages de l'application
+│   ├── assets/        # Images et ressources
+│   ├── hooks/         # React hooks personnalisés
+│   └── lib/           # Utilitaires
+├── public/            # Fichiers statiques
+└── dist/              # Build de production
+```
 
-This project is built with:
+## Scripts disponibles
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/81b01250-b925-4496-a6cf-b6bf2615031a) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- `npm run dev` - Démarrer le serveur de développement
+- `npm run build` - Builder pour la production
+- `npm run preview` - Prévisualiser le build
+- `npm run lint` - Linter le code
+- `npm run convert-images` - Convertir les images en WebP
