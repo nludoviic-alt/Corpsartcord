@@ -10,6 +10,10 @@ coverage/
 dist/
 build/
 
+# Images sources très lourdes (on garde seulement les versions optimisées)
+# Les images lourdes dans src/assets/ et public/ sont nécessaires pour le build
+# mais peuvent ralentir Git - Netlify les gérera lors du build
+
 # Misc
 .DS_Store
 .env.local
