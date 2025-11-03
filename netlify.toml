@@ -1,6 +1,7 @@
 [build]
-  command = "npm run build"
+  command = "npm install && npm run build"
   publish = "dist"
+  functions = "netlify/functions"
 
 [[redirects]]
   from = "/*"
@@ -9,4 +10,10 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+[dev]
+  command = "npm run dev"
+  port = 8080
+  publish = "dist"
 
